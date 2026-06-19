@@ -47,7 +47,6 @@ This project focuses on proving that services are not only installed, but also d
 ```text
 homelab/
 ├── README.md
-├── REPO_STRUCTURE.md
 ├── docs/
 │   ├── 00-overview/
 │   │   ├── project-roadmap.md
