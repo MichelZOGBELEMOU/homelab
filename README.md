@@ -45,30 +45,133 @@ This project focuses on proving that services are not only installed, but also d
 ## Repository Structure
 
 ```text
-.
+homelab/
 ├── README.md
+├── REPO_STRUCTURE.md
 ├── docs/
-│   ├── inventory.md
-│   ├── topology.md
-│   ├── ip-plan.md
-│   ├── naming-conventions.md
-│   ├── service-catalog.md
-│   ├── validation.md
-│   ├── change-log.md
-│   ├── incidents.md
-│   ├── access-control.md
-│   ├── backup-strategy.md
-│   ├── monitoring-strategy.md
-│   ├── logging-strategy.md
-│   ├── portfolio-evidence.md
+│   ├── 00-overview/
+│   │   ├── project-roadmap.md
+│   │   ├── dependency-order.md
+│   │   └── recruiter-summary.md
+│   │
+│   ├── 01-inventory/
+│   │   ├── asset-inventory.md
+│   │   ├── vm-inventory.md
+│   │   ├── service-inventory.md
+│   │   └── unknowns.md
+│   │
+│   ├── 02-network/
+│   │   ├── topology.md
+│   │   ├── physical-topology.md
+│   │   ├── ip-plan.md
+│   │   ├── vlan-plan.md
+│   │   ├── dns-plan.md
+│   │   └── firewall-policy.md
+│   │
+│   ├── 03-services/
+│   │   ├── dns.md
+│   │   ├── dhcp.md
+│   │   ├── ntp.md
+│   │   ├── dhcp-ddns.md
+│   │   ├── reverse-proxy-tls.md
+│   │   ├── mail.md
+│   │   ├── identity-access.md
+│   │   ├── storage.md
+│   │   ├── backup-restore.md
+│   │   ├── monitoring.md
+│   │   ├── logging.md
+│   │   └── zammad.md
+│   │
+│   ├── 04-operations/
+│   │   ├── validation.md
+│   │   ├── change-log.md
+│   │   ├── incidents.md
+│   │   ├── security-baseline.md
+│   │   └── service-catalog.md
+│   │
 │   ├── phases/
+│   │   ├── phase-00-physical-lab-foundation.md
+│   │   ├── phase-01-basic-network-connectivity.md
+│   │   ├── phase-02-discovery-inventory.md
+│   │   ├── phase-03-proxmox-virtualization-platform.md
+│   │   ├── phase-04-router-firewall-foundation.md
+│   │   ├── phase-05-ip-plan-naming-network-zones.md
+│   │   ├── phase-06-dns-service.md
+│   │   ├── phase-07-dhcp-service.md
+│   │   ├── phase-08-ntp-time-service.md
+│   │   ├── phase-09-dhcp-ddns-external-ddns.md
+│   │   ├── phase-10-reverse-proxy-tls.md
+│   │   ├── phase-11-mail-service.md
+│   │   ├── phase-12-identity-access-control.md
+│   │   ├── phase-13-file-storage-service.md
+│   │   ├── phase-14-backup-restore.md
+│   │   ├── phase-15-monitoring-alerting.md
+│   │   ├── phase-16-central-logging.md
+│   │   ├── phase-17-security-baseline.md
+│   │   ├── phase-18-change-management.md
+│   │   ├── phase-19-zammad-ticketing.md
+│   │   ├── phase-20-incident-response.md
+│   │   ├── phase-21-os-installation-automation.md
+│   │   ├── phase-22-infrastructure-service-automation.md
+│   │   ├── phase-23-software-application-deployment-pipeline.md
+│   │   ├── phase-24-terraform-opentofu-iac.md
+│   │   ├── phase-25-kubernetes-k3s-learning-cluster.md
+│   │   └── phase-26-portfolio-polish.md
+│   │
 │   └── runbooks/
+│       ├── daily-health-check.md
+│       ├── network-troubleshooting.md
+│       ├── dns-troubleshooting.md
+│       ├── backup-restore-test.md
+│       ├── incident-response.md
+│       └── service-deployment-checklist.md
+│
 ├── diagrams/
+│   ├── current-topology.drawio
+│   ├── target-topology.drawio
+│   └── vlan-design.drawio
+│
 ├── configs/
+│   ├── vyos/
+│   ├── dns/
+│   ├── dhcp/
+│   ├── ntp/
+│   ├── reverse-proxy/
+│   ├── mail/
+│   ├── monitoring/
+│   └── logging/
+│
 ├── scripts/
+│   ├── bash/
+│   └── python/
+│
+├── automation/
+│   ├── ansible/
+│   ├── docker-compose/
+│   ├── terraform-opentofu/
+│   └── ci-cd/
+│
 ├── evidence/
+│   ├── phase-00-physical-lab-foundation/
+│   ├── phase-01-basic-network-connectivity/
+│   ├── phase-02-discovery-inventory/
+│   ├── phase-03-proxmox-virtualization-platform/
+│   ├── phase-04-router-firewall-foundation/
+│   ├── dns-dhcp-ntp/
+│   ├── backup-restore/
+│   ├── monitoring-logging/
+│   ├── security/
+│   ├── incidents/
+│   └── portfolio-screenshots/
+│
 └── templates/
+    ├── phase-template.md
+    ├── validation-evidence-template.md
+    ├── change-record-template.md
+    ├── incident-report-template.md
+    └── runbook-template.md
 ```
+
 
 ---
 
