@@ -42,133 +42,173 @@ This project focuses on proving that services are not only installed, but also d
 
 ---
 
+
 ## Repository Structure
+
+The repository is organized by operational artifact area. Some files already exist; others are planned and created phase by phase as evidence is produced.
 
 ```text
 homelab/
 ├── README.md
+├── LICENSE
+├── CHANGELOG.md
+
 ├── docs/
-│   ├── 00-overview/
-│   │   ├── project-roadmap.md
-│   │   ├── dependency-order.md
-│   │   └── recruiter-summary.md
+│   ├── physical/
+│   │   ├── physical-layout.md
+│   │   └── cable-map.md
 │   │
-│   ├── 01-inventory/
-│   │   ├── asset-inventory.md
-│   │   ├── vm-inventory.md
-│   │   ├── service-inventory.md
-│   │   └── unknowns.md
+│   ├── inventory/
+│   │   ├── homelab-inventory.md
+│   │   ├── ip-inventory.md
+│   │   └── known-unknowns.md
 │   │
-│   ├── 02-network/
-│   │   ├── topology.md
-│   │   ├── physical-topology.md
+│   ├── network/
+│   │   ├── initial-network-setup.md
+│   │   ├── current-topology.md
+│   │   ├── router-firewall-summary.md
+│   │   ├── current-routing.md
+│   │   ├── current-firewall-policy.md
 │   │   ├── ip-plan.md
-│   │   ├── vlan-plan.md
+│   │   ├── hostname-standard.md
+│   │   ├── network-zones.md
 │   │   ├── dns-plan.md
-│   │   └── firewall-policy.md
+│   │   ├── dns-records.md
+│   │   ├── dhcp-plan.md
+│   │   ├── dhcp-reservations.md
+│   │   ├── dhcp-ddns-plan.md
+│   │   ├── external-ddns-plan.md
+│   │   ├── ddns-validation.md
+│   │   ├── reverse-proxy-plan.md
+│   │   ├── reverse-proxy-validation.md
+│   │   └── mail-dns-records.md
 │   │
-│   ├── 03-services/
-│   │   ├── dns.md
-│   │   ├── dhcp.md
-│   │   ├── ntp.md
-│   │   ├── dhcp-ddns.md
-│   │   ├── reverse-proxy-tls.md
-│   │   ├── mail.md
-│   │   ├── identity-access.md
-│   │   ├── storage.md
-│   │   ├── backup-restore.md
-│   │   ├── monitoring.md
-│   │   ├── logging.md
-│   │   └── zammad.md
+│   ├── proxmox/
+│   │   ├── proxmox-host-summary.md
+│   │   ├── vm-inventory.md
+│   │   └── ubuntu-template.md
 │   │
-│   ├── 04-operations/
-│   │   ├── validation.md
-│   │   ├── change-log.md
-│   │   ├── incidents.md
-│   │   ├── security-baseline.md
-│   │   └── service-catalog.md
+│   ├── servers/
+│   │   ├── r610-server-profile.md
+│   │   └── hardware-risk-notes.md
 │   │
-│   ├── phases/
-│   │   ├── phase-00-physical-lab-foundation.md
-│   │   ├── phase-01-basic-network-connectivity.md
-│   │   ├── phase-02-discovery-inventory.md
-│   │   ├── phase-03-proxmox-virtualization-platform.md
-│   │   ├── phase-04-router-firewall-foundation.md
-│   │   ├── phase-05-ip-plan-naming-network-zones.md
-│   │   ├── phase-06-dns-service.md
-│   │   ├── phase-07-dhcp-service.md
-│   │   ├── phase-08-ntp-time-service.md
-│   │   ├── phase-09-dhcp-ddns-external-ddns.md
-│   │   ├── phase-10-reverse-proxy-tls.md
-│   │   ├── phase-11-mail-service.md
-│   │   ├── phase-12-identity-access-control.md
-│   │   ├── phase-13-file-storage-service.md
-│   │   ├── phase-14-backup-restore.md
-│   │   ├── phase-15-monitoring-alerting.md
-│   │   ├── phase-16-central-logging.md
-│   │   ├── phase-17-security-baseline.md
-│   │   ├── phase-18-change-management.md
-│   │   ├── phase-19-zammad-ticketing.md
-│   │   ├── phase-20-incident-response.md
-│   │   ├── phase-21-os-installation-automation.md
-│   │   ├── phase-22-infrastructure-service-automation.md
-│   │   ├── phase-23-software-application-deployment-pipeline.md
-│   │   ├── phase-24-terraform-opentofu-iac.md
-│   │   ├── phase-25-kubernetes-k3s-learning-cluster.md
-│   │   └── phase-26-portfolio-polish.md
+│   ├── services/
+│   │   ├── dns-service.md
+│   │   ├── dhcp-service.md
+│   │   ├── time-service.md
+│   │   ├── dhcp-ddns-service.md
+│   │   ├── reverse-proxy-service.md
+│   │   ├── mail-service.md
+│   │   ├── mail-requirements.md
+│   │   └── zammad-service.md
 │   │
-│   └── runbooks/
-│       ├── daily-health-check.md
-│       ├── network-troubleshooting.md
-│       ├── dns-troubleshooting.md
-│       ├── backup-restore-test.md
-│       ├── incident-response.md
-│       └── service-deployment-checklist.md
-│
-├── diagrams/
-│   ├── current-topology.drawio
-│   ├── target-topology.drawio
-│   └── vlan-design.drawio
-│
-├── configs/
-│   ├── vyos/
-│   ├── dns/
-│   ├── dhcp/
-│   ├── ntp/
-│   ├── reverse-proxy/
-│   ├── mail/
-│   ├── monitoring/
-│   └── logging/
-│
-├── scripts/
-│   ├── bash/
-│   └── python/
-│
-├── automation/
-│   ├── ansible/
-│   ├── docker-compose/
-│   ├── terraform-opentofu/
-│   └── ci-cd/
-│
-├── evidence/
-│   ├── phase-00-physical-lab-foundation/
-│   ├── phase-01-basic-network-connectivity/
-│   ├── phase-02-discovery-inventory/
-│   ├── phase-03-proxmox-virtualization-platform/
-│   ├── phase-04-router-firewall-foundation/
-│   ├── dns-dhcp-ntp/
-│   ├── backup-restore/
-│   ├── monitoring-logging/
+│   ├── operations/
+│   │   └── time-sync-checks.md
+│   │
 │   ├── security/
+│   │   ├── identity-access-plan.md
+│   │   ├── ssh-access-policy.md
+│   │   ├── sudo-policy.md
+│   │   ├── service-accounts.md
+│   │   ├── tls-certificate-plan.md
+│   │   ├── mail-security-notes.md
+│   │   ├── security-baseline.md
+│   │   ├── ssh-policy.md
+│   │   ├── firewall-review.md
+│   │   └── exposure-review.md
+│   │
+│   ├── storage/
+│   │   ├── storage-service.md
+│   │   ├── storage-layout.md
+│   │   ├── access-permissions.md
+│   │   └── storage-risk-notes.md
+│   │
+│   ├── backup/
+│   │   ├── backup-policy.md
+│   │   ├── backup-inventory.md
+│   │   ├── restore-test-report.md
+│   │   └── recovery-checklist.md
+│   │
+│   ├── monitoring/
+│   │   ├── monitoring-plan.md
+│   │   ├── service-checks.md
+│   │   ├── alert-response.md
+│   │   └── dashboard-notes.md
+│   │
+│   ├── logging/
+│   │   ├── logging-plan.md
+│   │   ├── log-sources.md
+│   │   ├── log-retention.md
+│   │   └── log-validation.md
+│   │
+│   ├── change-management/
+│   │   ├── change-request-template.md
+│   │   ├── rollback-plan-template.md
+│   │   └── maintenance-window-template.md
+│   │
+│   ├── zammad/
+│   │   ├── ticket-workflow.md
+│   │   ├── ticket-categories.md
+│   │   └── zammad-validation.md
+│   │
 │   ├── incidents/
-│   └── portfolio-screenshots/
-│
-└── templates/
-    ├── phase-template.md
-    ├── validation-evidence-template.md
-    ├── change-record-template.md
-    ├── incident-report-template.md
-    └── runbook-template.md
+│   │   ├── incident-template.md
+│   │   ├── severity-levels.md
+│   │   ├── incident-workflow.md
+│   │   └── test-incident-report.md
+│   │
+│   ├── provisioning/
+│   │   ├── manual-os-install.md
+│   │   ├── cloud-init-plan.md
+│   │   └── os-installation-automation.md
+│   │
+│   ├── automation/
+│   │   ├── infrastructure-service-automation-plan.md
+│   │   ├── ansible-plan.md
+│   │   ├── docker-compose-plan.md
+│   │   └── cicd-validation-plan.md
+│   │
+│   ├── deployment/
+│   │   ├── application-deployment-plan.md
+│   │   ├── cicd-pipeline.md
+│   │   ├── rollback-procedure.md
+│   │   └── deployment-validation.md
+│   │
+│   ├── iac/
+│   │   ├── terraform-opentofu-plan.md
+│   │   ├── proxmox-provider-notes.md
+│   │   └── iac-validation.md
+│   │
+│   ├── kubernetes/
+│   │   ├── k3s-cluster-plan.md
+│   │   ├── k3s-installation.md
+│   │   ├── k3s-validation.md
+│   │   └── test-workload.md
+│   │
+│   ├── architecture.md (1/3)
+[7/6/26 5:05 PM] hermes-premier: │   ├── portfolio-summary.md
+│   └── interview-stories.md
+
+├── ansible/
+│   ├── inventory.ini
+│   └── playbooks/
+
+├── compose/
+│   └── <service>/
+│       └── docker-compose.yml
+
+├── terraform/
+│   └── README.md
+
+├── opentofu/
+│   └── README.md
+
+└── .github/
+    └── workflows/
+        ├── validation.yml
+        ├── app-ci.yml
+        └── app-deploy.yml
+
 ```
 
 
@@ -176,21 +216,202 @@ homelab/
 
 ## Documentation
 
-- [Inventory](docs/inventory.md)
-- [Network Topology](docs/topology.md)
-- [IP Address Plan](docs/ip-plan.md)
-- [Naming Conventions](docs/naming-conventions.md)
-- [Service Catalog](docs/service-catalog.md)
-- [Validation Tests](docs/validation.md)
-- [Change Log](docs/change-log.md)
-- [Incident Notes](docs/incidents.md)
-- [Access Control](docs/access-control.md)
-- [Backup Strategy](docs/backup-strategy.md)
-- [Monitoring Strategy](docs/monitoring-strategy.md)
-- [Logging Strategy](docs/logging-strategy.md)
-- [Portfolio Evidence](docs/portfolio-evidence.md)
-- [Runbooks](docs/runbooks/)
-- [Project Phases](docs/phases/)
+
+
+
+## Documentation
+
+Current and planned documentation follows the same artifact paths used in the GitHub phase issues.
+
+### Current committed evidence
+
+- [Physical layout](docs/physical/physical-layout.md)
+- [Cable map](docs/physical/cable-map.md)
+- [Current network topology](docs/network/current-topology.md)
+- [Initial network setup](docs/network/initial-network-setup.md)
+
+### Phase 2: Discovery inventory
+
+- `docs/inventory/homelab-inventory.md`
+- `docs/inventory/ip-inventory.md`
+- `docs/inventory/known-unknowns.md`
+
+### Phase 3: Proxmox virtualization platform
+
+- `docs/proxmox/proxmox-host-summary.md`
+- `docs/proxmox/vm-inventory.md`
+- `docs/servers/r610-server-profile.md`
+- `docs/servers/hardware-risk-notes.md`
+
+### Phase 4: Router/firewall foundation
+
+- `docs/network/router-firewall-summary.md`
+- `docs/network/current-routing.md`
+- `docs/network/current-firewall-policy.md`
+
+### Phase 5: IP plan, naming, and network zones
+
+- `docs/network/ip-plan.md`
+- `docs/network/hostname-standard.md`
+- `docs/network/network-zones.md`
+
+### Phase 6: DNS service
+
+- `docs/network/dns-plan.md`
+- `docs/services/dns-service.md`
+- `docs/network/dns-records.md`
+
+### Phase 7: DHCP service
+
+- `docs/network/dhcp-plan.md`
+- `docs/services/dhcp-service.md`
+- `docs/network/dhcp-reservations.md`
+
+### Phase 8: NTP/time service
+
+- `docs/services/time-service.md`
+- `docs/operations/time-sync-checks.md`
+
+### Phase 9: DHCP-DDNS and external DDNS
+
+- `docs/network/dhcp-ddns-plan.md`
+- `docs/services/dhcp-ddns-service.md`
+- `docs/network/external-ddns-plan.md`
+- `docs/network/ddns-validation.md`
+
+### Phase 10: Reverse proxy and TLS
+
+- `docs/network/reverse-proxy-plan.md`
+- `docs/services/reverse-proxy-service.md`
+- `docs/security/tls-certificate-plan.md`
+- `docs/network/reverse-proxy-validation.md`
+
+### Phase 11: Mail service
+
+- `docs/services/mail-service.md`
+- `docs/services/mail-requirements.md`
+- `docs/network/mail-dns-records.md`
+- `docs/security/mail-security-notes.md`
+
+### Phase 12: Identity and access control
+
+- `docs/security/identity-access-plan.md`
+- `docs/security/ssh-access-policy.md`
+- `docs/security/sudo-policy.md`
+- `docs/security/service-accounts.md`
+
+### Phase 13: File/storage service
+
+- `docs/storage/storage-service.md`
+- `docs/storage/storage-layout.md`
+- `docs/storage/access-permissions.md`
+- `docs/storage/storage-risk-notes.md`
+
+### Phase 14: Backup and restore
+
+- `docs/backup/backup-policy.md`
+- `docs/backup/backup-inventory.md`
+- `docs/backup/restore-test-report.md`
+- `docs/backup/recovery-checklist.md`
+
+### Phase 15: Monitoring and alerting
+
+- `docs/monitoring/monitoring-plan.md`
+- `docs/monitoring/service-checks.md`
+- `docs/monitoring/alert-response.md`
+- `docs/monitoring/dashboard-notes.md`
+
+### Phase 16: Central logging
+
+- `docs/logging/logging-plan.md`
+- `docs/logging/log-sources.md`
+- `docs/logging/log-retention.md`
+- `docs/logging/log-validation.md`
+
+### Phase 17: Security baseline
+
+- `docs/security/security-baseline.md`
+- `docs/security/ssh-policy.md`
+- `docs/security/firewall-review.md`
+- `docs/security/exposure-review.md`
+
+### Phase 18: Change management
+
+- `docs/change-management/change-request-template.md`
+- `docs/change-management/rollback-plan-template.md`
+- `docs/change-management/maintenance-window-template.md`
+- `CHANGELOG.md`
+
+### Phase 19: Zammad ticketing
+
+- `docs/services/zammad-service.md`
+- `docs/zammad/ticket-workflow.md`
+- `docs/zammad/ticket-categories.md`
+- `docs/zammad/zammad-validation.md`
+
+### Phase 20: Incident response
+
+- `docs/incidents/incident-template.md`
+- `docs/incidents/severity-levels.md`
+- `docs/incidents/incident-workflow.md`
+- `docs/incidents/test-incident-report.md`
+
+### Phase 21: OS installation automation
+
+- `docs/provisioning/manual-os-install.md`
+- `docs/proxmox/ubuntu-template.md`
+- `docs/provisioning/cloud-init-plan.md`
+- `docs/provisioning/os-installation-automation.md`
+
+### Phase 22: Infrastructure service automation
+
+- `docs/automation/infrastructure-service-automation-plan.md`
+- `docs/automation/ansible-plan.md`
+- `docs/automation/docker-compose-plan.md`
+- `docs/automation/cicd-validation-plan.md`
+
+Code artifacts:
+
+- `ansible/inventory.ini`
+- `ansible/playbooks/base-linux.yml`
+- `ansible/playbooks/<service>.yml`
+- `compose/<service>/docker-compose.yml`
+- `.github/workflows/validation.yml`
+
+### Phase 23: Software/application deployment pipeline
+
+- `docs/deployment/application-deployment-plan.md`
+- `docs/deployment/cicd-pipeline.md`
+- `docs/deployment/rollback-procedure.md`
+- `docs/deployment/deployment-validation.md`
+
+Code artifacts:
+
+- `Dockerfile`
+- `docker-compose.yml`
+- `.github/workflows/app-ci.yml`
+- `.github/workflows/app-deploy.yml`
+
+### Phase 24: Terraform/OpenTofu infrastructure as code
+
+- `terraform/` or `opentofu/`
+- `docs/iac/terraform-opentofu-plan.md`
+- `docs/iac/proxmox-provider-notes.md`
+- `docs/iac/iac-validation.md`
+
+### Phase 25: Kubernetes/k3s learning cluster
+
+- `docs/kubernetes/k3s-cluster-plan.md`
+- `docs/kubernetes/k3s-installation.md`
+- `docs/kubernetes/k3s-validation.md`
+- `docs/kubernetes/test-workload.md`
+
+### Phase 26: Portfolio polish
+
+- `README.md`
+- `docs/architecture.md`
+- `docs/portfolio-summary.md`
+- `docs/interview-stories.md`
 
 ---
 
