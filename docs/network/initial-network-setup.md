@@ -2,78 +2,89 @@
 
 ## Goal
 
-Verify basic network connectivity between the admin desktop, VyOS router, TP-Link switch, Dell PowerEdge R610 iDRAC, and Proxmox host.
+Verify basic network connectivity between the homelab devices.
 
-## Current network facts
+## Network
 
-- Router / default gateway: `10.10.0.1`
-- LAN subnet: `10.10.0.0/24`
-- DHCP range: `10.10.0.100 - 10.10.0.199`
-- DNS server provided by DHCP: `10.10.0.1`
-- Admin desktop:
-  - Hostname: `ubuntu-desktop`
-  - Connection: Ethernet
-  - Interface: `enp3s0`
-  - Current IP: `10.10.0.129`
-- Dell PowerEdge R610 iDRAC:
-  - Current IP: `10.10.0.102`
-  - Web UI reachable: yes
-- Proxmox host:
-  - Current IP: `10.10.0.131`
-  - Web UI reachable: yes
-  - URL tested: `https://10.10.0.131:8006`
+- Network: 10.10.0.0/24
+- Gateway: 10.10.0.1
+- Router/firewall: VyOS/Zotac
+- Managed switch: TP-Link TL-SG108E
 
-## Verified connectivity tests
+## Current DNS Mode
 
-- Admin desktop can reach gateway `10.10.0.1`.
-- Admin desktop can reach public IP `1.1.1.1`.
-- Admin desktop can resolve and reach `google.com`.
-- Admin desktop can reach R610 iDRAC.
-- Admin desktop can reach Proxmox web UI.
-- Admin desktop can reach iDRAC web UI.
+At this stage, most systems use public DNS directly.
 
-## VyOS DHCP configuration summary
+Current DNS servers in use:
 
-- DHCP server: enabled
-- DHCP subnet: `10.10.0.0/24`
-- DHCP range: `10.10.0.100 - 10.10.0.199`
-- Default router option: `10.10.0.1`
-- Domain option: `home.lab`
-- DNS option: `10.10.0.1`
-- Lease time: `86400` seconds
+- 1.1.1.1
+- 8.8.8.8 where configured
 
-## Current risk
+Future target:
 
-Important infrastructure devices currently use DHCP addresses inside the dynamic DHCP range:
+- Internal DNS resolver for homelab hostnames
+- Public DNS used only as upstream resolvers
 
-- iDRAC: `10.10.0.102`
-- Proxmox: `10.10.0.131`
-- Admin desktop: `10.10.0.129`
+## Static Infrastructure Addresses
 
-These addresses may change after lease renewal or device replacement unless DHCP reservations or static addresses are configured.
+### Proxmox Hosts
 
-## Future improvements
+- pve01
+  - IP address: 10.10.0.10
+  - Gateway: 10.10.0.1
+  - DNS: 1.1.1.1
+  - Address type: static
 
-- Create DHCP reservations for infrastructure devices.
-- Decide which devices should use static IP addresses.
-- Document an IP address plan.
-- Document switch management IP if available.
-- Separate iDRAC management access from Proxmox host access.
-- Later phases should handle IP planning, DHCP reservations, DNS, and naming.
+- pve02
+  - IP address: 10.10.0.11
+  - Gateway: 10.10.0.1
+  - DNS: 1.1.1.1
+  - Address type: static
 
-## What I learned
+### Management Interfaces
 
-Basic network connectivity should be verified layer by layer instead of guessed.
+- ilosgh017t7n8
+  - Role: HPE iLO management interface
+  - IP address: 10.10.0.146
+  - Gateway: 10.10.0.1
+  - DNS: none currently configured
 
-The correct order is:
+### Network Devices
 
-1. Physical connection
-2. Interface/IP address
-3. Default gateway
-4. Local network reachability
-5. Internet reachability
-6. DNS resolution
-7. Service/web UI reachability
+- tl-sg108e
+  - Role: TP-Link TL-SG108E managed switch
+  - IP address: 10.10.0.100
+  - Gateway: not documented
+  - DNS: not documented
 
-A working ping or web UI is useful evidence, but infrastructure addresses must be documented as dynamic, reserved, or static.
+### Client Systems
 
+- ws01
+  - Role: HP Z2 Tower G4 workstation
+  - IP address: 10.10.0.158
+  - Gateway: 10.10.0.1
+  - DNS: 1.1.1.1, 8.8.8.8
+
+- lg-gram
+  - Role: LG Gram laptop
+  - IP address: 10.10.0.135
+  - Gateway: 10.10.0.1
+  - DNS: 1.1.1.1, 8.8.8.8
+
+## Connectivity Validation
+
+| Hostname | IP Address | Gateway Reachable | Internet IP Reachable | DNS Resolution |
+|---|---:|---|---|---|
+| pve01 | 10.10.0.10 | yes | yes | yes |
+| pve02 | 10.10.0.11 | yes | yes | yes |
+| ilosgh017t7n8 | 10.10.0.146 | yes | yes | no |
+| tl-sg108e | 10.10.0.100 | yes | not tested / not required | not tested / not required |
+| ws01 | 10.10.0.158 | yes | yes | yes |
+| lg-gram | 10.10.0.135 | yes | yes | yes |
+
+## Notes
+
+- `pve01`, `pve02`, `ws01`, and `lg-gram` have full basic network connectivity.
+- `ilosgh017t7n8` has IP connectivity but no DNS resolution because DNS is not configured.
+- `tl-sg108e` is reachable for local management. Internet and DNS testing are not required at this stage.
+- Internal DNS has not been implemented yet.

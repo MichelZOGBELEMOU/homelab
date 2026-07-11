@@ -27,125 +27,76 @@ VyOS router/firewall
    |
 TP-Link TL-SG108E switch
    |
+   |
+   |-- Port 6
+   |    |
+   |    +-- Samsung Desktop System / Proxmox
+   |        | Current IP: 10.10.0.11
+   |        | Web UI: https://10.10.0.11:8006
+   |
+   |-- Port 5
+   |    |
+   |    +-- ipTIME AX2004T LAN port 1
+   |         |
+   |         +-- lg-gram: Wi-Fi
+   |              | Interface: wlp1s0
+   |              | Current IP: 10.10.0.135
    |-- Port 4
    |     |
-   |     +-- ubuntu-desktop
-   |         | Interface: enp3s0
-   |         | Current IP: 10.10.0.129
+   |     +-- HP Z2 Tower G4 workstation
+   |         | Interface: eno1
+   |         | Current IP: 10.10.0.158
    |
    |-- Port 2
    |     | 
-   |     +-- Dell PowerEdge R610 iDRAC
-   |         | Current IP: 10.10.0.102
+   |     +-- HPE DL360 Gen10 iLO Dedicated Network Port
+   |         | Current IP: 10.10.0.146
    |
    |-- Port 3
          |
-         +-- Dell PowerEdge R610 / Proxmox
-             | Current IP: 10.10.0.131
-             | Web UI: https://10.10.0.131:8006
+         +-- HPE DL360 Gen10 Adapter 1 / HPE Ethernet 1Gb 4-port 331i Adapter / NIC port 1
+             | Current IP: 10.10.0.10
+             | Web UI: https://10.10.0.10:8006
 ```
 
 
-## Device roles
+## Core Network
 
-### VyOS router/firewall
+- Gateway/router: VyOS/Zotac
+  - Gateway IP: 10.10.0.1
 
-- Role: lab router, firewall, DHCP provider, and gateway
-- WAN interface: `eth1`
-- LAN interface: `eth2`
-- LAN IP address: `10.10.0.1/24`
-- Default gateway for lab clients: `10.10.0.1`
+- Managed switch: TP-Link TL-SG108E
+  - Hostname: tl-sg108e
+  - Management IP: 10.10.0.100
 
-### TP-Link TL-SG108E switch
+## Connected Infrastructure Devices
 
-- Role: central LAN switch
-- Connects the router, admin desktop, and Dell R610 network interfaces
-- Admin desktop is connected on switch port 4
-- Switch management IP: unknown
+- HPE DL360 Gen10 Proxmox host
+  - Hostname: pve01
+  - IP address: 10.10.0.10
 
-### ubuntu-desktop
+- Samsung desktop Proxmox host
+  - Hostname: pve02
+  - IP address: 10.10.0.11
 
-- Role: admin/control machine
-- Connection type: Ethernet
-- Network interface: `enp3s0`
-- Current IP address: `10.10.0.129`
-- Connected to switch port 4
+- HPE iLO management interface
+  - Hostname: ilosgh017t7n8
+  - IP address: 10.10.0.146
 
-### Dell PowerEdge R610 iDRAC
+## Client Devices
 
-- Role: out-of-band server management
-- Current IP address: `10.10.0.102`
-- Connected to the LAN through the TP-Link switch Port 2
-- Reachable from `ubuntu-desktop`
+- HP Z2 Tower G4 workstation
+  - Hostname: ws01
+  - IP address: 10.10.0.158
 
-### Dell PowerEdge R610 / Proxmox host
+- LG Gram laptop
+  - Hostname: lg-gram
+  - IP address: 10.10.0.135
+  - Connected through Wi-Fi via the ipTIME AX2004T access point
 
-- Role: virtualization host
-- Current IP address: `10.10.0.131`
-- Connected to the LAN through the TP-Link switch Port 3
-- Proxmox web interface: `https://10.10.0.131:8006`
-- Reachable from `ubuntu-desktop`
+## Access Point
 
-## Traffic path
-
-### Admin desktop to router
-
-```text
-ubuntu-desktop
-  -> TP-Link switch
-  -> VyOS LAN interface eth2
-  -> 10.10.0.1
-```
-
-### Admin desktop to Proxmox
-
-```text
-ubuntu-desktop
-  -> TP-Link switch
-  -> Dell PowerEdge R610 / Proxmox host
-  -> 10.10.0.131
-```
-
-### Admin desktop to iDRAC
-
-```text
-ubuntu-desktop
-  -> TP-Link switch
-  -> Dell PowerEdge R610 iDRAC
-  -> 10.10.0.102
-```
-
-## Current addressing status
-
-The following addresses were observed during Phase 1:
-
-- VyOS router LAN: `10.10.0.1/24`
-- ubuntu-desktop: `10.10.0.129`
-- R610 iDRAC: `10.10.0.102`
-- Proxmox host: `10.10.0.131`
-
-The admin desktop, iDRAC, and Proxmox addresses are currently assigned by DHCP and should be treated as current observed addresses, not permanent infrastructure assignments.
-
-## Known unknowns
-
-- TP-Link switch management IP address is not documented yet.
-
-## Follow-up topology improvements
-
-These should be handled in later phases:
-
-- Create a stable IP address plan.
-- Add DHCP reservations or static IPs for infrastructure devices.
-- Document the switch management address.
-- Add future network zones or VLANs after the basic network is stable.
-
-## Summary
-
-The current topology is a simple flat LAN:
-
-```text
-VyOS router/firewall -> TP-Link switch -> admin desktop / R610 iDRAC / Proxmox host
-```
-
-Basic connectivity is working, but infrastructure addressing still needs to be made stable in a later phase.
+- ipTIME AX2004T access point
+  - Connected to TP-Link TL-SG108E port 5
+  - Used for wireless client access
 
