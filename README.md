@@ -33,9 +33,11 @@ This project focuses on proving that services are not only installed, but also d
 
 ## Current Environment
 
-- Dell PowerEdge R610 / Proxmox host
+- HPE PROLIANT DL360 Gen10 / Proxmox host
+- Samsung Desktop / second Proxmox host
 - VyOS router/firewall
 - TP-Link managed switch
+- ipTIME AX2004T router (AP)
 - Ubuntu admin workstation
 - Linux virtual machines for infrastructure services
 - Current lab subnet: `10.10.0.0/24`
@@ -186,7 +188,7 @@ homelab/
 │   │   └── test-workload.md
 │   │
 │   ├── architecture.md (1/3)
-[7/6/26 5:05 PM] hermes-premier: │   ├── portfolio-summary.md
+|   ├── portfolio-summary.md
 │   └── interview-stories.md
 
 ├── ansible/
@@ -213,8 +215,6 @@ homelab/
 
 
 ---
-
-## Documentation
 
 
 
