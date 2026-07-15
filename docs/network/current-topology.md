@@ -46,6 +46,11 @@ TP-Link TL-SG108E switch
    |     +-- HP Z2 Tower G4 workstation
    |         | Interface: eno1
    |         | Current IP: 10.10.0.158
+   |         |
+   |         +-- Incus VM: pv03
+   |              | Role: nested Proxmox VE lab node
+   |              | Curent IP: 10.10.0.12
+   |
    |
    |-- Port 2
    |     | 
@@ -82,6 +87,13 @@ TP-Link TL-SG108E switch
 - HPE iLO management interface
   - Hostname: ilosgh017t7n8
   - IP address: 10.10.0.146
+
+- Nested Proxmox lab node
+  - Hostname: pve03
+  - IP address: 10.10.0.12
+  - Parent host: ws01 / HP Z2 Tower G4
+  - Note: Proxmox cluster, quarum, and migration testing.
+            Not an independent physical failure domain.
 
 ## Client Devices
 
