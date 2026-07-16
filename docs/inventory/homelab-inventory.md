@@ -88,7 +88,7 @@ The goal is to make troubleshooting easier by documenting which devices exist, w
 - Storage:
   - 250 GB SSD
   - 500 GB HDD
-  - 1 TB HDD
+  - 500 GB HDD
 - Network interfaces:
   - 4 x 1 Gb Ethernet ports
   - 2 x 10 Gb Ethernet ports
@@ -145,7 +145,7 @@ The goal is to make troubleshooting easier by documenting which devices exist, w
 - RAM: 12 GB
 - Storage:
   - 120 GB SSD
-  - 500 GB HDD
+  - 1 TB HDD
 - Network interfaces:
   - 1 x 1 Gb Ethernet port
 - Other: none documented
