@@ -40,7 +40,22 @@ This project focuses on proving that services are not only installed, but also d
 - ipTIME AX2004T router (AP)
 - Ubuntu admin workstation
 - Linux virtual machines for infrastructure services
-- Current lab subnet: `10.10.0.0/24`
+- Current network design: VLAN-based segmented network with separate MGMT, SRV, ADMIN, CLIENT, GST-IOT, and DMZ zones.
+
+
+---
+
+## Current Phase
+
+The homelab is currently in Phase 5: VLAN and network-zone implementation.
+
+Current focus:
+
+- VLAN gateway configuration
+- Network-zone separation
+- Admin to Management access
+- Firewall baseline
+- Service-specific firewall rules added later as machines and services are installed
 
 ---
 
@@ -65,7 +80,12 @@ homelab/
 │   │   ├── ip-inventory.md
 │   │   └── known-unknowns.md
 │   │
-│   ├── network/
+|   ├── network/
+|   |   ├── router-firewall-foundation.md
+|   |   ├── vlan-plan.md
+|   |   ├── switch-port-map.md
+|   |   ├── network-change-roolback.md
+|   |   ├── current-firewall-policy.md
 │   │   ├── initial-network-setup.md
 │   │   ├── current-topology.md
 │   │   ├── router-firewall-summary.md
@@ -190,21 +210,16 @@ homelab/
 │   ├── architecture.md (1/3)
 |   ├── portfolio-summary.md
 │   └── interview-stories.md
-
 ├── ansible/
 │   ├── inventory.ini
 │   └── playbooks/
-
 ├── compose/
 │   └── <service>/
 │       └── docker-compose.yml
-
 ├── terraform/
 │   └── README.md
-
 ├── opentofu/
 │   └── README.md
-
 └── .github/
     └── workflows/
         ├── validation.yml
