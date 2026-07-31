@@ -26,6 +26,7 @@ The ipTIME AX2004T is used as Wi-Fi access point for the LG Gram laptop. It shou
 - TP-Link TL-SG108E port 5 -> ipTIME AX2004T LAN port 1
 - TP-Link TL-SG108E port 6 -> Samsung Desktop System / Proxmox host
 - LG Gram -> Wi-Fi through ipTIME AX2004T
+- HP Z620 -> TP-Link TL-SG108E port 7
 
 ### TP-Link TL-SG108E
 
@@ -35,7 +36,7 @@ The ipTIME AX2004T is used as Wi-Fi access point for the LG Gram laptop. It shou
 - Port 4: HP Z2 Tower G4 workstation
 - Port 5: ipTIME AX2004T LAN port 1
 - Port 6: Samsung Desktop System / Proxmox host
-- Port 7: Unused
+- Port 7: HP Z620
 - Port 8: Unused
 
 
@@ -78,6 +79,12 @@ The ipTIME AX2004T is used as Wi-Fi access point for the LG Gram laptop. It shou
 
 - Connection: Wi-Fi through ipTIME AX200AT
 - Role: secondary Linux client / secondary control node
+
+### HP Z620
+ 
+- Connected to TP-Link TL-SG108E port 7
+- Role: Third Proxmox virtualization host
+
 ### Dell PowerEdge R610
 - Status: Decommissioned
 - Current cabling: no active connection documented

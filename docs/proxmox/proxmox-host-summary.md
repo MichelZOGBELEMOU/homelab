@@ -57,20 +57,22 @@ Storage notes:
 | Field | Value |
 |---|---|
 | Hostname | pve03 |
-| Role | Nested/testing Proxmox host |
-| Management IP | 10.10.0.12 |
+| Role | Third physical Proxmox host |
+| Management IP | 10.10.10.12 |
 | Reachability | Reachable |
-| Proxmox version | 9.4.2 |
-| CPU | Intel Xeon E-2144G @ 3.60GHz, 3 cores assigned |
-| RAM | 4 GB |
-| Storage | 100 GB SSD-backed virtual disk |
-| Current VMs/containers | None yet |
+| Proxmox version | 9.2.5 |
+| Hardware | HP Z620 Workstation |
+| CPU | Intel Xeon E5-2670 v2 @ 2.50GHz |
+| RAM | 70 GiB |
+| Storage | 232.9G system disk plus 931.5G additional disk |
+| Current VMs/containers | None documented yet |
 
-Nested host notes:
+Notes:
 
-- pve03 runs as a nested Proxmox system inside Incus on ws01.
-- pve03 is useful for testing Proxmox behavior, lab experiments, and safe learning.
-- pve03 should not be treated as an independent physical failure domain.
+- pve03 now runs on a physical HP Z620 Workstation.
+- This host replaces the previous nested/testing pve03.
+- Basic verification passed.
+- pve03 is planned to host `dns02.home.lab` later in Phase 6 after `dns01` is built and validated.
 
 ## Current Platform State
 
@@ -80,7 +82,7 @@ Current state:
 
 - pve01 is the main physical virtualization host.
 - pve02 is a secondary physical host.
-- pve03 is a nested testing host.
+- pve03 is a the third phyiscal host.
 - No VMs or containers are running yet.
 - Storage exists on each host but final workload placement is not yet defined.
 

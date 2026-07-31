@@ -20,6 +20,8 @@ The Samsung DeskTop System has been repurposed as an additional Proxmox host.
 
 The HP Z2 Tower G4 workstation, is the main control/admin node.
 
+The HP Z620 is the third virtualisation host.
+
 The ipTIME AX2004T is used as a Wi-Fi access point for the lab.
 
 The LG Gram laptop is a secondary control/admin node.
@@ -80,6 +82,18 @@ The Dell PowerEdge R610 has been decommissioned and is no longer part of the act
 - Notes:
     - Connected by Ethernet
     - Used for SSH, documentation, Git, Proxmox/VyOS administration, and future automation work.
+
+### HP Z620 Workstation
+- Device type: Workstation
+- OS/software: Proxmox 9.2.5
+- Powered on: Yes
+- Physical location: Under the desk
+- Network role: Third virtualisation host
+Notes:
+    - connected by Ethernet
+    - replaces the nested proxmox.
+
+
 ### ipTIME AX2004T
 
 - Device type: Wireless router used as access point

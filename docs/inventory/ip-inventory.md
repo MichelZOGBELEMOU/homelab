@@ -53,15 +53,16 @@ The goal is to make troubleshooting easier by documenting which device uses each
 
 ## 10.10.0.12
 
-- Device: nested Proxmox / pve03
-- Role: lab/testing Proxmox node
-- Platform: Proxmox VE 9.2.4
+- Device: HP Z620 Workstation / pve03
+- Role: third physical Proxmox virtualization host
+- Platform: Proxmox VE, version needs verification
 - Management service: Proxmox Web UI / SSH
-- Address purpose: nested Proxmox lab/testing management
+- Address purpose: Proxmox host management
 - Notes:
-  - Nested VM hosted through HP Z2 / ws01.
-  - Reaches the homelab LAN through a bridge on HP Z2 / ws01.
-  - Should not be treated as an independent physical failure domain.
+  - Replaces the previous nested Proxmox / pve03.
+  - Current legacy management address during migration.
+  - Planned management address in the VLAN design: 10.10.10.12.
+  - Switch port needs verification.
 
 ## 10.10.0.100
 

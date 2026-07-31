@@ -158,6 +158,40 @@ The goal is to make troubleshooting easier by documenting which devices exist, w
 
 - Final workload role is not fully documented yet.
 
+## HP Z620 Workstation / pve03
+
+- Device type: workstation-class server
+- Physical or VM: physical
+- Main role: third Proxmox virtualization host
+- Operating system/platform: Proxmox VE 9.2.5
+- IP address: 10.10.10.12
+- Management access: Proxmox Web UI / SSH
+- Connected to: TP-Link switch port 7
+
+### Hardware specifications
+
+- Manufacturer: Hewlett-Packard
+- Model: HP Z620 Workstation
+- CPU: Intel Xeon E5-2670 v2 @ 2.50GHz
+- RAM: 70 GiB
+- Storage:
+  - 232.9G system disk
+  - 931.5G additional disk, final purpose not yet documented
+
+### Known facts
+
+- Physical Proxmox VE host.
+- Replaces the previous nested Proxmox / pve03.
+- Connected to TP-Link TL-SG108E port 7.
+- Management address is on MGMT VLAN 10.
+- Basic verification passed.
+- Planned to host `dns02.home.lab` later in Phase 6 after `dns01` is built and validated.
+
+### Notes
+
+- Confirm the final storage purpose for the 931.5G disk before placing important workloads on it.
+- Service VMs on this host can later be attached to VLAN 20 / SRV as needed.
+
 ## HP Z2 / ws01
 
 - Device type: desktop workstation
@@ -190,35 +224,6 @@ The goal is to make troubleshooting easier by documenting which devices exist, w
 
 - Admin security baseline is not fully documented yet.
 
-
-## Nested Proxmox / pve03
-
-- Device type: nested virtualization host
-- Physical or VM: VM
-- Main role: lab/testing Proxmox node
-- Operating system/platform: Proxmox VE 9.2.4
-- IP address: 10.10.0.12
-- Management access: Web UI / SSH / Incus host access
-- Connected to: homelab LAN through a bridge on HP Z2 / ws01
-
-### Hardware specifications
-
-- CPU: host CPU
-- RAM: 4 GB
-- Storage: 100 GB LVM
-- Network interfaces:
-  - NIC0
-- Other: nested Proxmox VM
-
-### Known facts
-
-- Nested Proxmox VE node.
-- Used for lab and testing.
-
-### Notes
-
-- Should be used for lab/testing only.
-- Should not be treated as an independent physical failure domain.
 
 ## LG Gram / lg-gram
 
