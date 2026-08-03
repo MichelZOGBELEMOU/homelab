@@ -2,292 +2,345 @@
 
 ## Service Summary
 
-| Item | Value |
-|---|---|
-| Service name | Internal DNS |
-| Primary host | dns01.home.lab |
-| Primary IP | 10.10.20.10 |
-| Secondary host | dns02.home.lab, planned after primary validation |
-| Secondary IP | 10.10.20.11 |
-| Network zone | SRV / VLAN 20 |
-| Software | BIND9 |
-| Operating system | Debian 13 |
-| Status | dns01 base OS installed, BIND9 not installed yet |
-| Phase | Phase 6 — DNS service |
+- Service name: Internal DNS.
+- Internal domain: `home.lab`.
+- Service model: BIND9 authoritative DNS plus redundant client resolvers.
+- Network zone: SRV / VLAN 20.
+- Status: Active and validated.
+- Phase: Phase 6 — DNS service.
+- Owner: Michel.
 
 ## Purpose
 
 The DNS service provides internal hostname resolution for the homelab.
 
-It allows administrators and future services to use stable names such as `pve01.home.lab`, `dns01.home.lab`, and `backup01.home.lab` instead of memorizing IP addresses.
+It allows administrators and future services to use stable names instead of memorizing IP addresses. It also creates a foundation for later DHCP-DDNS, reverse proxy, TLS, monitoring, logging, and service discovery work.
+
+## Architecture
+
+The DNS implementation is split into two roles.
+
+### Authoritative DNS
+
+- `dns01.home.lab`
+  - Role: primary authoritative DNS server.
+  - Software: BIND9.
+  - Zone type: primary.
+  - Zone files: `/var/lib/bind/`.
+
+- `dns02.home.lab`
+  - Role: secondary authoritative DNS server.
+  - Software: BIND9.
+  - Zone type: secondary.
+  - Zone files: `/var/cache/bind/secondaries/`.
+
+### Client Resolvers
+
+- `dns-resolv-01.servers.home.lab`
+  - IP address: `10.10.20.12`.
+  - Role: client-facing resolver.
+
+- `dns-resolv-02.servers.home.lab`
+  - IP address: `10.10.20.13`.
+  - Role: client-facing resolver.
+
+Validated client:
+
+- `ws01` uses DNS servers `10.10.20.12` and `10.10.20.13`.
+- `ws01` search domain is `home.lab`.
+- `ws01` uses the normal system resolver stub at `127.0.0.53`.
 
 ## Service Scope
 
 In scope:
 
-- Internal `home.lab` zone
-- Static records for infrastructure hosts
-- Static records for infrastructure services
-- DNS forwarding or recursion for external names
-- Basic DNS validation from an admin system
-- Future secondary DNS using `dns02`
+- Internal `home.lab` DNS.
+- Network subzones.
+- Forward records for infrastructure hosts.
+- Reverse records for infrastructure hosts.
+- Primary/secondary authoritative DNS.
+- Client resolver pair.
+- Client-side validation from `ws01`.
 
 Out of scope:
 
-- Public DNS hosting
-- DDNS
-- DHCP-DDNS integration
-- TLS certificates
-- Reverse proxy configuration
-- Public-facing services
-
-## Service Owner
-
-| Item | Value |
-|---|---|
-| Owner | Michel |
-| Role | Homelab infrastructure administrator |
-
-## Primary Server
-
-| Item | Value |
-|---|---|
-| Hostname | dns01 |
-| FQDN | dns01.home.lab |
-| IP address | 10.10.20.10/24 |
-| Gateway | 10.10.20.1 |
-| VLAN | VLAN 20 / SRV |
-| Proxmox host | pve02 |
-| OS | Debian 13 |
-| DNS software | BIND9 |
-| Status | Base OS installed and validated |
-
-## Planned Secondary Server
-
-| Item | Value |
-|---|---|
-| Hostname | dns02 |
-| FQDN | dns02.home.lab |
-| IP address | 10.10.20.11/24 |
-| Gateway | 10.10.20.1 |
-| VLAN | VLAN 20 / SRV |
-| Proxmox host | pve03 / HP Z620 Workstation |
-| OS | Debian 13 |
-| DNS software | BIND9 |
-| Status | Planned after dns01 validation |
-
-## dns01 Base Install Validation
-
-| Check | Result |
-|---|---|
-| Hostname is dns01 | Passed |
-| Static IP is 10.10.20.10/24 | Passed |
-| Gateway is 10.10.20.1 | Passed |
-| VLAN is 20 / SRV | Passed |
-| Can ping gateway 10.10.20.1 | Passed |
-| Can ping 1.1.1.1 | Passed |
-| Can resolve debian.org | Passed |
-| Can SSH from admin machine | Passed |
-| Proxmox host is pve02 | Passed |
-
-Current status:
-
-- Base OS installed and ready for BIND9 installation.
-
-## dns01 Partition Layout
-
-| Mount or Volume | Size | Type | Purpose |
-|---|---:|---|---|
-| /boot | 1 GB | ext4 | Boot files |
-| / | 10 GB | LVM | Root filesystem |
-| swap | 2 GB | LVM | Swap space |
-| /var | 7 GB | LVM | Logs, package cache, and service data |
-
-Operational note:
-
-- A separate `/var` partition is useful for service logs and package/cache data.
-- `/var` should be monitored after BIND9 is installed because DNS logs and package cache can grow over time.
+- Public DNS.
+- External DDNS.
+- DHCP-DDNS integration.
+- TLS certificates.
+- Reverse proxy configuration.
+- Public-facing services.
 
 ## Service Dependencies
 
 Required dependencies:
 
-- Working Server VLAN gateway: `10.10.20.1`
-- Working Admin-to-Server routing/firewall path
-- Static IP address for `dns01`: `10.10.20.10`
-- Upstream DNS path for external resolution
-- Working SRV-to-WAN firewall policy for updates, DNS, and NTP
+- Server VLAN / VLAN 20 connectivity.
+- Admin workstation access to the DNS resolver pair.
+- BIND9 running on authoritative DNS servers.
+- Zone transfer path from primary to secondary authoritative DNS.
+- Correct resolver configuration on clients.
 
 Related documentation:
 
+- `docs/network/dns-plan.md`
+- `docs/network/dns-records.md`
+- `docs/network/dns-validation.md`
 - `docs/network/ip-plan.md`
 - `docs/network/network-zones.md`
 - `docs/network/current-firewall-policiy.md`
-- `docs/network/dns-plan.md`
-- `docs/network/dns-records.md`
-- `docs/proxmox/vm-inventory.md`
 
-## Users and Clients
+## Active Zones
 
-Initial clients:
+Forward zones:
 
-- Admin workstation on ADMIN VLAN
-- Infrastructure hosts that need internal name resolution
+- `home.lab`
+- `mgmt.home.lab`
+- `servers.home.lab`
+- `admin.home.lab`
+- `clients.home.lab`
+- `guest.home.lab`
+- `dmz.home.lab`
 
-Future clients:
+Reverse zones:
 
-- Server VLAN systems
-- Client VLAN systems
-- Guest/IoT systems only if specifically allowed
+- `10.10.10.in-addr.arpa`
+- `20.10.10.in-addr.arpa`
+- `30.10.10.in-addr.arpa`
+- `40.10.10.in-addr.arpa`
+- `50.10.10.in-addr.arpa`
+- `60.10.10.in-addr.arpa`
 
 ## Access Policy
 
 Administrative access:
 
-- ADMIN VLAN may administer `dns01` over SSH.
+- Admin access to DNS servers should be limited to the Admin zone.
+- SSH should be used for administration.
 
 DNS query access:
 
-- ADMIN VLAN may query `dns01`.
-- SRV VLAN may query `dns01`.
-- MGMT VLAN may query `dns01` if needed by infrastructure devices.
-- CLIENT VLAN access is deferred until the Client VLAN is active.
-- Guest/IoT DNS access is denied by default unless a future documented rule allows it.
+- Approved clients should query the resolver pair.
+- DNS traffic should use UDP/53 and TCP/53 as needed.
+- Guest/IoT DNS access should remain denied unless explicitly documented later.
 
-WAN access:
+Zone-transfer access:
 
-- WAN must not initiate new connections to `dns01`.
-- This is an internal DNS service only.
+- Zone transfers should be allowed only from the primary authoritative DNS server to approved secondary authoritative DNS servers.
 
 ## Expected Ports
 
-| Port | Protocol | Purpose |
-|---:|---|---|
-| 53 | UDP | Standard DNS queries |
-| 53 | TCP | Large DNS responses, fallback DNS, and DNS operations when needed |
-| 22 | TCP | SSH administration from ADMIN VLAN only |
+- UDP/53: standard DNS queries.
+- TCP/53: large DNS responses, fallback, and DNS operations where required.
+- TCP/22: SSH administration from approved admin systems.
 
-Outbound from `dns01`:
 
-| Port | Protocol | Purpose |
-|---:|---|---|
-| 53 | UDP/TCP | External DNS forwarding or recursion |
-| 80 | TCP | Package repositories |
-| 443 | TCP | Secure package repositories and downloads |
-| 123 | UDP | NTP time synchronization |
-| ICMP | ICMP | Troubleshooting |
+## Firewall Requirements
+
+### Required DNS access
+
+The internal DNS service requires client networks to reach the DNS resolver pair in the SRV VLAN.
+
+Approved resolver hosts:
+
+- `dns-resolv-01.servers.home.lab` — `10.10.20.12`
+- `dns-resolv-02.servers.home.lab` — `10.10.20.13`
+
+Required ports:
+
+- UDP `53` — standard DNS queries
+- TCP `53` — large DNS responses and fallback queries
+
+### Current firewall policy
+
+MGMT to SRV:
+
+- Ruleset: `MGMT-TO-SRV`
+- Rule: `60`
+- Access: TCP/UDP `53`
+- Destination: `DNS-RESOLVER` firewall group
+- Status: Passed
+
+ADMIN to SRV:
+
+- Ruleset: `ADMIN-TO-SRV`
+- Rule: `90`
+- Access: TCP/UDP `53`
+- Destination: SRV VLAN DNS service
+- Status: Passed
+- Follow-up: restrict destination to `DNS-RESOLVER`
+
+SRV return traffic:
+
+- Rulesets:
+  - `SRV-TO-MGMT`
+  - `SRV-TO-ADMIN`
+- Access: established/related only
+- Default policy: drop
+- Status: Passed
+
+### Operational expectation
+
+DNS should be reachable from approved client/admin networks only through the documented resolver pair.
+
+The firewall should not allow broad inter-VLAN access simply because DNS is required. DNS access should be narrow, documented, and validated with packet counters and client lookup tests.
+
+### Validation commands
+
+From a client using the normal resolver path:
+
+    dig pve01.mgmt.home.lab
+    dig pve02.mgmt.home.lab
+    dig -x 10.10.20.12
+    dig -x 10.10.20.13
+
+From the firewall:
+
+    show firewall ipv4 name MGMT-TO-SRV
+    show firewall ipv4 name ADMIN-TO-SRV
+    show firewall ipv4 name SRV-TO-MGMT
+    show firewall ipv4 name SRV-TO-ADMIN
+    show firewall group DNS-RESOLVER
+
+### Acceptance criteria
+
+- DNS clients can resolve internal forward records.
+- DNS clients can resolve internal reverse records.
+- Firewall counters increase on expected DNS allow rules.
+- DNS resolver targets are documented in the `DNS-RESOLVER` firewall group.
+- Return traffic is handled by established/related rules.
+- Default drop remains active between VLANs.
+- Any broader temporary DNS rule is documented with a hardening follow-up.
+
 
 ## Availability Target
 
-This is a homelab service, but it should be treated as important infrastructure.
+This is a homelab service, but DNS should be treated as core infrastructure.
 
 Expected behavior:
 
-- `dns01` should be reachable from approved VLANs.
-- Internal records should resolve consistently.
-- External resolution should continue to work through forwarding or recursion.
-- Failure should be documented and troubleshot because DNS affects many future services.
-- `dns02` will be added later on pve03 to practice secondary DNS, zone transfers, and resolver failover behavior.
+- Resolver pair responds to approved clients.
+- Internal forward records resolve consistently.
+- Internal reverse records resolve consistently.
+- Secondary authoritative zones remain loaded and refreshed.
+- Failures are documented with commands, observations, root cause, and fix.
+
+## Validation Evidence
+
+Client resolver configuration on `ws01`:
+
+    DNS Servers: 10.10.20.12 10.10.20.13
+    DNS Domain: home.lab
+    SERVER: 127.0.0.53#53
+
+Forward lookups validated from `ws01`:
+
+    dig pve01.mgmt.home.lab
+dig pve02.mgmt.home.lab
+    dig dns-resolv-01.servers.home.lab
+    dig dns-resolv-02.servers.home.lab
+
+Reverse lookups validated from `ws01`:
+
+    dig -x 10.10.10.10
+    dig -x 10.10.10.11
+    dig -x 10.10.20.12
+    dig -x 10.10.20.13
+
+Confirmed results:
+
+- `pve01.mgmt.home.lab` -> `10.10.10.10`.
+- `pve02.mgmt.home.lab` -> `10.10.10.11`.
+- `dns-resolv-01.servers.home.lab` -> `10.10.20.12`.
+- `dns-resolv-02.servers.home.lab` -> `10.10.20.13`.
+- `10.10.10.10` -> `pve01.mgmt.home.lab.`.
+- `10.10.10.11` -> `pve02.mgmt.home.lab.`.
+- `10.10.20.12` -> `dns-resolv-01.servers.home.lab.`.
+- `10.10.20.13` -> `dns-resolv-02.servers.home.lab.`.
+
+## Troubleshooting Note
+
+During final validation, PTR records for the resolver hosts initially returned incorrect names with the reverse-zone origin appended:
+
+    dns-resolv-01.servers.home.lab.20.10.10.in-addr.arpa.
+    dns-resolv-02.servers.home.lab.20.10.10.in-addr.arpa.
+
+Root cause:
+
+- PTR targets in the `20.10.10.in-addr.arpa` reverse zone were missing trailing dots.
+- BIND treated the targets as relative names and appended the reverse-zone origin.
+
+Correct records:
+
+    12  IN  PTR  dns-resolv-01.servers.home.lab.
+    13  IN  PTR  dns-resolv-02.servers.home.lab.
+
+Validation after correction:
+
+    dig -x 10.10.20.12
+    dig -x 10.10.20.13
+
+The corrected answers returned the expected FQDNs.
 
 ## Backup and Recovery Notes
 
-Backup requirements:
+Backup requirements for the backup phase:
 
-- BIND9 configuration files
-- Zone files
-- Service notes and validation results
+- BIND configuration files.
+- Forward zone files.
+- Reverse zone files.
+- Resolver configuration notes.
+- Validation commands and expected results.
 
 Recovery expectation:
 
-- A rebuilt `dns01` should be able to restore internal name resolution from documented configuration and records.
+- A rebuilt DNS service should restore internal name resolution from documented configuration and zone files.
 
 Backup implementation status:
 
-- Deferred until backup phase
+- Deferred until backup phase.
 
 ## Monitoring Notes
 
 Future monitoring should check:
 
-- DNS service process is running
-- UDP/53 responds on `10.10.20.10`
-- TCP/53 responds on `10.10.20.10`
-- `dns01.home.lab` resolves correctly
-- `pve01.home.lab` resolves correctly
-- External lookup through DNS service works
-- `/var` has enough free space
+- DNS resolver process/service is running.
+- UDP/53 responds on both resolver IPs.
+- TCP/53 responds when required.
+- Known forward records resolve correctly.
+- Known reverse records resolve correctly.
+- Secondary zones are loaded and not expired.
 
 Example future checks:
 
-- `dig @10.10.20.10 dns01.home.lab`
-- `dig @10.10.20.10 pve01.home.lab`
-- `dig @10.10.20.10 example.com`
-- `df -h /var`
+    dig @10.10.20.12 pve01.mgmt.home.lab
+    dig @10.10.20.13 pve02.mgmt.home.lab
+    dig @10.10.20.12 -x 10.10.20.12
+    dig @10.10.20.13 -x 10.10.20.13
 
 Monitoring implementation status:
 
-- Deferred until monitoring phase
+- Deferred until monitoring phase.
 
 ## Implementation Checklist
 
-- [x] Create the `dns01` VM.
-- [x] Configure static IP `10.10.20.10`.
-- [x] Validate gateway reachability.
-- [x] Validate Internet IP reachability.
-- [x] Validate external DNS resolution.
-- [x] Validate SSH from admin machine.
-- [x] Install BIND9 on Debian 13.
-- [ ] Configure the `home.lab` zone.
-- [ ] Add core infrastructure records.
-- [ ] Add service alias records.
-- [ ] Configure upstream DNS forwarding or recursion.
-- [ ] Validate internal DNS resolution.
-- [ ] Validate external DNS resolution through BIND9.
-- [ ] Record failures and unknowns.
-- [ ] Build `dns02` on pve03 after `dns01` is validated.
-- [ ] Configure and validate zone transfer from `dns01` to `dns02`.
+- [x] Select internal domain.
+- [x] Configure authoritative DNS.
+- [x] Configure primary zones.
+- [x] Configure secondary zones.
+- [x] Configure forward zones.
+- [x] Configure reverse zones.
+- [x] Configure resolver pair.
+- [x] Configure `ws01` client resolver settings.
+- [x] Validate forward lookups.
+- [x] Validate reverse lookups.
+- [x] Troubleshoot and fix incorrect PTR target formatting.
+- [x] Document validation evidence.
 
-## Validation Checklist
+## Known Follow-up Items
 
-From an admin machine after BIND9 configuration:
-
-- `dig @10.10.20.10 dns01.home.lab`
-- `dig @10.10.20.10 edge.home.lab`
-- `dig @10.10.20.10 pve01.home.lab`
-- `dig @10.10.20.10 example.com`
-
-Expected results:
-
-- `dns01.home.lab` resolves to `10.10.20.10`.
-- `edge.home.lab` resolves to the router/firewall management address.
-- `pve01.home.lab` resolves to the Proxmox management address.
-- External resolution still works.
-
-## BIND9 Install Validation
-
-| Check | Result |
-|---|---|
-| BIND9 package installed | Passed |
-| bind9.service active | Passed |
-| BIND version | BIND 9.20.26-1~deb13u1-Debian |
-| BIND configuration syntax | Passed |
-
-Validation commands:
-
-```bash
-systemctl is-active bind9.service
-sudo named -v
-sudo named-checkconf
-```
-
-Validation output:
-
-```text
-active
-BIND 9.20.26-1~deb13u1-Debian (Stable Release) <id:>
-```
-
-Operational note:
-
-- `named-checkconf` produced no output, which means the BIND9 configuration syntax passed.
+- Add DNS monitoring checks in the monitoring phase.
+- Add DNS backup/restore validation in the backup phase.
+- Add DHCP-DDNS integration in a later DHCP/DDNS phase.
+- Add reverse proxy and public DNS records only in later external access phases.
 
