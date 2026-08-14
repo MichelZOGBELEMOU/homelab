@@ -88,7 +88,7 @@ Related documentation:
 - `docs/network/dns-validation.md`
 - `docs/network/ip-plan.md`
 - `docs/network/network-zones.md`
-- `docs/network/current-firewall-policiy.md`
+- `docs/network/current-firewall-policy.md`
 
 ## Active Zones
 

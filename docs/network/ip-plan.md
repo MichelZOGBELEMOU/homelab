@@ -43,8 +43,12 @@ Planned addresses:
 Planned addresses:
 
 - `10.10.20.10` — `dns01`
-- `10.10.20.11` — `dhcp01` if DHCP is later moved from VyOS
-- `10.10.20.12` — `ntp01`
+- `10.10.20.11` — `dns02`
+- `10.10.20.12` — `dns-resolv-01`
+- `10.10.20.13` — `dns-resolv-02`
+- `10.10.20.14` — `dhcp01`
+- `10.10.20.15` — `dhcp02`
+- `10.10.20.16` — `ntp01`
 - `10.10.20.20` — `monitor01`
 - `10.10.20.21` — `log01`
 - `10.10.20.30` — `backup01`

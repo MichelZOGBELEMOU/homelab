@@ -33,7 +33,7 @@ This project focuses on proving that services are not only installed, but also d
 
 ## Current Environment
 
-- HPE PROLIANT DL360 Gen10 / Proxmox host
+- HPE Proliant DL360 Gen10 / Proxmox host
 - Samsung Desktop / second Proxmox host
 - VyOS router/firewall
 - TP-Link managed switch
@@ -47,15 +47,20 @@ This project focuses on proving that services are not only installed, but also d
 
 ## Current Phase
 
-The homelab is currently in Phase 5: VLAN and network-zone implementation.
+The homelab has completed Phase 6: Internal DNS service, and the next major service phase is DHCP.
 
 Current focus:
 
-- VLAN gateway configuration
-- Network-zone separation
-- Admin to Management access
-- Firewall baseline
-- Service-specific firewall rules added later as machines and services are installed
+Current completed DNS evidence:
+
+- Internal `home.lab` namespace.
+- BIND9 authoritative DNS with primary and secondary zones.
+- Forward zones for home, management, server, admin, client, guest, and DMZ names.
+- Reverse zones for VLANs 10-60.
+- Client resolver pair: `10.10.20.12` and `10.10.20.13`.
+- `ws01` configured to use internal DNS with search domain `home.lab`.
+- Forward and reverse lookups validated from a normal client resolver path.
+- DNS firewall rules validated between MGMT/ADMIN and SRV.
 
 ---
 
@@ -84,18 +89,17 @@ homelab/
 |   |   ├── router-firewall-foundation.md
 |   |   ├── vlan-plan.md
 |   |   ├── switch-port-map.md
-|   |   ├── network-change-roolback.md
+|   |   ├── network-change-rollback.md
 |   |   ├── current-firewall-policy.md
 │   │   ├── initial-network-setup.md
 │   │   ├── current-topology.md
-│   │   ├── router-firewall-summary.md
 │   │   ├── current-routing.md
-│   │   ├── current-firewall-policy.md
 │   │   ├── ip-plan.md
 │   │   ├── hostname-standard.md
 │   │   ├── network-zones.md
 │   │   ├── dns-plan.md
 │   │   ├── dns-records.md
+|   |   ├── dns-validation.md
 │   │   ├── dhcp-plan.md
 │   │   ├── dhcp-reservations.md
 │   │   ├── dhcp-ddns-plan.md
@@ -108,11 +112,8 @@ homelab/
 │   ├── proxmox/
 │   │   ├── proxmox-host-summary.md
 │   │   ├── vm-inventory.md
-│   │   └── ubuntu-template.md
-│   │
-│   ├── servers/
-│   │   ├── r610-server-profile.md
-│   │   └── hardware-risk-notes.md
+│   │   ├── ubuntu-template.md
+|   |   └── hardware-risk-notes.md
 │   │
 │   ├── services/
 │   │   ├── dns-service.md
@@ -275,6 +276,9 @@ Current and planned documentation follows the same artifact paths used in the Gi
 - `docs/network/dns-plan.md`
 - `docs/services/dns-service.md`
 - `docs/network/dns-records.md`
+- `docs/network/dns-validation.md`
+
+### Planned future artifacts
 
 ### Phase 7: DHCP service
 
@@ -437,9 +441,9 @@ This roadmap follows the detailed homelab phase summary and uses GitHub Issues t
 | Phase | Focus |
 |---|---|
 | 0 | Physical lab foundation: place, power, cable, and label equipment |
-| 1 | Basic network connectivity: router, switch, R610, and admin machines |
+| 1 | Basic network connectivity: router, switch, and admin machines |
 | 2 | Discovery inventory: hardware, IPs, OS, VMs, services, and unknowns |
-| 3 | Proxmox virtualization platform on the R610 |
+| 3 | Proxmox virtualization platform  |
 | 4 | VyOS router/firewall foundation |
 | 5 | IP plan, naming, subnets, VLANs, and network zones |
 | 6 | Internal DNS service |

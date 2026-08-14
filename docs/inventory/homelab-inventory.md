@@ -185,7 +185,6 @@ The goal is to make troubleshooting easier by documenting which devices exist, w
 - Connected to TP-Link TL-SG108E port 7.
 - Management address is on MGMT VLAN 10.
 - Basic verification passed.
-- Planned to host `dns02.home.lab` later in Phase 6 after `dns01` is built and validated.
 
 ### Notes
 
@@ -248,7 +247,7 @@ The goal is to make troubleshooting easier by documenting which devices exist, w
 
 - Connects to the homelab network over Wi-Fi.
 - Uses the VyOS gateway at 10.10.0.1.
-- Uses DNS server 1.1.1.1.
+- - Uses internal DNS resolvers 10.10.20.12 and 10.10.20.13 with search domain home.lab.
 
 ### Notes
 

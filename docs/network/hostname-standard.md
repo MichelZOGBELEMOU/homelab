@@ -68,9 +68,9 @@ Use:
 
 FQDN examples:
 
-- `pve01.home.lab`
-- `pve02.home.lab`
-- `pve03.home.lab`
+- `pve01.mgmt.home.lab`
+- `pve02.mgmt.home.lab`
+- `pve03.mgmt.home.lab`
 
 Reason:
 
@@ -108,8 +108,8 @@ Current examples:
 
 FQDN examples:
 
-- `ws01.home.lab`
-- `laptop01.home.lab`
+- `ws01.admin.home.lab`
+- `laptop01.admin.home.lab`
 
 Reason:
 

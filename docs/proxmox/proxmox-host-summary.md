@@ -12,7 +12,7 @@ This document summarizes the Proxmox virtualization hosts used in the homelab. T
 |---|---|
 | Hostname | pve01 |
 | Role | Main physical Proxmox host |
-| Management IP | 10.10.0.10 |
+| Management IP | 10.10.10.10 |
 | Reachability | Reachable |
 | Proxmox version | 9.4.2 |
 | CPU | 2x Intel Xeon Silver 4110 @ 2.10GHz |
@@ -36,7 +36,7 @@ Storage notes:
 |---|---|
 | Hostname | pve02 |
 | Role | Secondary physical Proxmox host |
-| Management IP | 10.10.0.11 |
+| Management IP | 10.10.10.11 |
 | Reachability | Reachable |
 | Proxmox version | 9.2.4 |
 | CPU | Intel Core i7-2600 @ 3.40GHz |
@@ -72,7 +72,7 @@ Notes:
 - pve03 now runs on a physical HP Z620 Workstation.
 - This host replaces the previous nested/testing pve03.
 - Basic verification passed.
-- pve03 is planned to host `dns02.home.lab` later in Phase 6 after `dns01` is built and validated.
+- - pve03 is part of the current Proxmox infrastructure and supports Phase 6 DNS service placement/validation.
 
 ## Current Platform State
 
@@ -111,20 +111,20 @@ The following validation checks were performed during Phase 3.
 
 | Check | Command or method | Expected result | Observed result |
 |---|---|---|---|
-| Ping pve01 | `ping -c 4 10.10.0.10` | Host replies | Passed |
-| Ping pve02 | `ping -c 4 10.10.0.11` | Host replies | Passed |
-| Ping pve03 | `ping -c 4 10.10.0.12` | Host replies | Passed |
-| Proxmox web UI pve01 | Browser: `https://10.10.0.10:8006` | Login page reachable | Passed |
-| Proxmox web UI pve02 | Browser: `https://10.10.0.11:8006` | Login page reachable | Passed |
-| Proxmox web UI pve03 | Browser: `https://10.10.0.12:8006` | Login page reachable | Passed |
+| Ping pve01 | `ping -c 4 10.10.10.10` | Host replies | Passed |
+| Ping pve02 | `ping -c 4 10.10.10.11` | Host replies | Passed |
+| Ping pve03 | `ping -c 4 10.10.10.12` | Host replies | Passed |
+| Proxmox web UI pve01 | Browser: `https://10.10.10.10:8006` | Login page reachable | Passed |
+| Proxmox web UI pve02 | Browser: `https://10.10.10.11:8006` | Login page reachable | Passed |
+| Proxmox web UI pve03 | Browser: `https://10.10.10.12:8006` | Login page reachable | Passed |
 
 ### Access checks
 
 | Check | Command or method | Expected result | Observed result |
 |---|---|---|---|
-| SSH access pve01 | `ssh sysadmin@10.10.0.10` | Login succeeds with SSH key | Passed |
-| SSH access pve02 | `ssh sysadmin@10.10.0.11` | Login succeeds with SSH key | Passed |
-| SSH access pve03 | `ssh sysadmin@10.10.0.12` | Login succeeds with SSH key | Passed |
+| SSH access pve01 | `ssh sysadmin@10.10.10.10` | Login succeeds with SSH key | Passed |
+| SSH access pve02 | `ssh sysadmin@10.10.10.11` | Login succeeds with SSH key | Passed |
+| SSH access pve03 | `ssh sysadmin@10.10.10.12` | Login succeeds with SSH key | Passed |
 | Root SSH login | SSH configuration / login test | Direct root SSH login disabled | Passed |
 
 ### Proxmox host checks

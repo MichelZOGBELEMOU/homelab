@@ -173,6 +173,7 @@ Completed in Phase 6:
 - [x] Validate reverse lookups from `ws01`.
 - [x] Correct PTR trailing-dot issue in the SRV reverse zone.
 - [x] Document validation evidence.
+- [x] Validate DNS firewall rules between MGMT/ADMIN and SRV.
 
 Deferred to later phases:
 
